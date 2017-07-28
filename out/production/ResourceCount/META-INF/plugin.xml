@@ -25,6 +25,8 @@
   -->
 
   <extensions defaultExtensionNs="com.intellij">
+    <codeInsight.lineMarkerProvider language="XML" implementationClass="MyLine"/>
+
     <!-- Add your extensions here -->
   </extensions>
 
@@ -42,6 +44,7 @@
       <add-to-group group-id="CodeMenu" anchor="first"/>
       <keyboard-shortcut keymap="$default" first-keystroke="shift ADD"/>
     </action>
+
   </actions>
 
 </idea-plugin>

@@ -1,59 +1,85 @@
+import com.intellij.codeHighlighting.Pass;
+import com.intellij.codeInsight.daemon.LineMarkerInfo;
+import com.intellij.codeInsight.daemon.LineMarkerProvider;
 import com.intellij.find.findUsages.FindUsagesHandler;
 import com.intellij.find.findUsages.FindUsagesOptions;
 import com.intellij.find.findUsages.PsiElement2UsageTargetAdapter;
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
+import com.intellij.openapi.editor.markup.GutterIconRenderer;
+import com.intellij.openapi.editor.markup.SeparatorPlacement;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.progress.util.ProgressWrapper;
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Factory;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.XmlRecursiveElementVisitor;
-import com.intellij.psi.util.PsiUtilBase;
 import com.intellij.psi.xml.XmlTag;
 import com.intellij.usages.Usage;
 import com.intellij.usages.UsageSearcher;
 import com.intellij.util.ArrayUtil;
 import com.intellij.util.Processor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Index extends AnAction {
+public class MyLine implements LineMarkerProvider {
 
-    private AtomicInteger mCount;
-    private Project mProject;
+    @Nullable
+    @Override
+    public LineMarkerInfo getLineMarkerInfo(@NotNull PsiElement psiElement) {
+        if (!ResourceUsageCountUtils.isTargetTagToCount(psiElement)) {
+            return null;
+        }
+        int count = findTagUsage((XmlTag) psiElement);
+        LineMarkerInfo info = new LineMarkerInfo(psiElement, psiElement.getTextRange(), new MyIcon(count), Pass.UPDATE_ALL, null, null, GutterIconRenderer.Alignment.RIGHT);
+        info.separatorPlacement = SeparatorPlacement.BOTTOM;
+        return info;
+    }
 
     @Override
-    public void actionPerformed(AnActionEvent e) {
-        // TODO: insert action logic here
-        mProject = e.getProject();
-        VirtualFile file = e.getDataContext().getData(CommonDataKeys.VIRTUAL_FILE);
-        if (ResourceUsageCountUtils.isTargetFileToCount(file)) {
-            findXmlTagFromFile(file);
+    public void collectSlowLineMarkers(@NotNull List<PsiElement> list, @NotNull Collection<LineMarkerInfo> collection) {
+
+    }
+
+    private class MyIcon implements Icon {
+
+        private int count;
+        private int length;
+
+        MyIcon(int count) {
+            this.count = count;
+            int temp = count;
+            length ++;
+            while (temp / 10 != 0) {
+                length ++;
+                temp /= 10;
+            }
+        }
+
+        @Override
+        public void paintIcon(Component c, Graphics g, int i, int j) {
+            g.setColor(Color.RED);
+            g.drawString(String.valueOf(count), i, j);
+        }
+
+        @Override
+        public int getIconWidth() {
+            return length * 5;
+        }
+
+        @Override
+        public int getIconHeight() {
+            return 0;
         }
     }
 
-    private void findXmlTagFromFile(VirtualFile file) {
-        PsiFile psiFile = PsiUtilBase.getPsiFile(mProject, file);
-        psiFile.accept(new XmlRecursiveElementVisitor() {
-
-            @Override
-            public void visitElement(PsiElement element) {
-                super.visitElement(element);
-                if (ResourceUsageCountUtils.isTargetTagToCount(element)) {
-                    findTagUsage((XmlTag)element);
-                }
-            }
-        });
-    }
-
-    public int findTagUsage(XmlTag element) {
-        FindUsagesHandler handler = FindUsageUtils.getFindUsagesHandler(element, mProject);
+    private int findTagUsage(XmlTag element) {
+        FindUsagesHandler handler = FindUsageUtils.getFindUsagesHandler(element, element.getProject());
         if (handler != null) {
             FindUsagesOptions findUsagesOptions = handler.getFindUsagesOptions();
             PsiElement2UsageTargetAdapter[] primaryTargets = FindUsageUtils.convertToUsageTargets(Arrays.asList(handler.getPrimaryElements()), findUsagesOptions);
@@ -63,7 +89,7 @@ public class Index extends AnAction {
                 return FindUsageUtils.createUsageSearcher(primaryTargets, secondaryTargets, handler, findUsagesOptions, (PsiFile)null);
             };
             UsageSearcher usageSearcher = (UsageSearcher)factory.create();
-            mCount = new AtomicInteger(0);
+            AtomicInteger mCount = new AtomicInteger(0);
             usageSearcher.generate(new Processor<Usage>() {
                 @Override
                 public boolean process(Usage usage) {
@@ -74,7 +100,6 @@ public class Index extends AnAction {
                     return !indicator1.isCanceled();
                 }
             });
-            System.out.println("ele: " + element.getText() + " ele: " + element.getName() + " count: " + mCount);
             return mCount.get();
         }
         return 0;
