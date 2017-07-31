@@ -2,7 +2,7 @@
   <id>com.niorgai</id>
   <name>Android Resource Usage Count</name>
   <version>1.0</version>
-  <vendor email="jianqiu.sysu@gmail.com" url="https://github.com/niorgai">Github</vendor>
+  <vendor email="jianqiu.sysu@gmail.com" url="https://github.com/niorgai/Android-Resource-Usage-Count">Github</vendor>
 
   <description><![CDATA[
     Count for android resource usage and show in each line. <br>

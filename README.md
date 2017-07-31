@@ -5,6 +5,8 @@ Auto count resource usage and show it in the left of each line.
 
 Use in Android Studio and Intellij IDEA.
 
+[Jetbrains Plugin Page](https://plugins.jetbrains.com/plugin/9885-android-resource-usage-count)
+
 ![](http://7sbqys.com1.z0.glb.clouddn.com/resouce_count_plugin_example.jpeg)
 
 Tag to count
