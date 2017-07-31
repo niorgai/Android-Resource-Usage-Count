@@ -25,25 +25,12 @@
   -->
 
   <extensions defaultExtensionNs="com.intellij">
-    <codeInsight.lineMarkerProvider language="XML" implementationClass="MyLine"/>
+    <codeInsight.lineMarkerProvider language="XML" implementationClass="UsageCountLineProvider"/>
 
     <!-- Add your extensions here -->
   </extensions>
 
   <actions>
-    <!-- Add your actions here -->
-    <action id="ResourceCount.Search" class="Search" text="Count" description="Show usage count for this resource">
-      <add-to-group group-id="Android.CreateResourcesActionGroup" anchor="first"/>
-      <keyboard-shortcut keymap="$default" first-keystroke="shift ADD"/>
-    </action>
-    <action id="Open" class="OpenFile" text="open" description="open new file">
-      <add-to-group group-id="$LRU" anchor="first"/>
-      <keyboard-shortcut keymap="$default" first-keystroke="shift ADD"/>
-    </action>
-    <action id="IndexResource" class="Index" text="inde">
-      <add-to-group group-id="CodeMenu" anchor="first"/>
-      <keyboard-shortcut keymap="$default" first-keystroke="shift ADD"/>
-    </action>
 
   </actions>
 

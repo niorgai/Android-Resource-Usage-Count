@@ -6,13 +6,11 @@ import com.intellij.find.findUsages.FindUsagesOptions;
 import com.intellij.find.findUsages.PsiElement2UsageTargetAdapter;
 import com.intellij.openapi.editor.markup.GutterIconRenderer;
 import com.intellij.openapi.editor.markup.SeparatorPlacement;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.progress.util.ProgressWrapper;
 import com.intellij.openapi.util.Factory;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.xml.XmlTag;
+import com.intellij.ui.JBColor;
 import com.intellij.usages.Usage;
 import com.intellij.usages.UsageSearcher;
 import com.intellij.util.ArrayUtil;
@@ -27,7 +25,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class MyLine implements LineMarkerProvider {
+public class UsageCountLineProvider implements LineMarkerProvider {
 
     @Nullable
     @Override
@@ -63,7 +61,7 @@ public class MyLine implements LineMarkerProvider {
 
         @Override
         public void paintIcon(Component c, Graphics g, int i, int j) {
-            g.setColor(Color.RED);
+            g.setColor(count <= 0 ? JBColor.GRAY : count == 1 ? JBColor.BLUE : JBColor.RED);
             g.drawString(String.valueOf(count), i, j);
         }
 
@@ -96,8 +94,7 @@ public class MyLine implements LineMarkerProvider {
                     if (ResourceUsageCountUtils.isUsefulUsageToCount(usage)) {
                         mCount.incrementAndGet();
                     }
-                    ProgressIndicator indicator1 = ProgressWrapper.unwrap(ProgressManager.getInstance().getProgressIndicator());
-                    return !indicator1.isCanceled();
+                    return true;
                 }
             });
             return mCount.get();
