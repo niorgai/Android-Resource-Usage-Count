@@ -5,10 +5,12 @@
   <vendor email="jianqiu.sysu@gmail.com" url="https://github.com/niorgai">Github</vendor>
 
   <description><![CDATA[
-    Count for resource usage and show it in line. <br>
+    Count for android resource usage and show it in line. <br>
     0 - grey color <br>
     1 - blue color <br>
-    other - red color
+    other - red color <br>
+
+    <img src="http://7sbqys.com1.z0.glb.clouddn.com/resouce_count_plugin_example.jpeg" width="400" height="200"/>
     ]]></description>
 
   <change-notes><![CDATA[
