@@ -3,7 +3,6 @@ import com.intellij.codeInsight.daemon.LineMarkerInfo;
 import com.intellij.codeInsight.daemon.LineMarkerProvider;
 import com.intellij.find.findUsages.FindUsagesHandler;
 import com.intellij.find.findUsages.FindUsagesOptions;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.markup.GutterIconRenderer;
 import com.intellij.openapi.editor.markup.SeparatorPlacement;
 import com.intellij.openapi.util.Factory;
@@ -28,7 +27,6 @@ public class UsageCountLineProvider implements LineMarkerProvider {
     @Nullable
     @Override
     public LineMarkerInfo getLineMarkerInfo(@NotNull PsiElement psiElement) {
-        Logger.getInstance("!23").error("start----");
         if (!ResourceUsageCountUtils.isTargetTagToCount(psiElement)) {
             return null;
         }
@@ -77,7 +75,6 @@ public class UsageCountLineProvider implements LineMarkerProvider {
 
     private int findTagUsage(XmlTag element) {
         final FindUsagesHandler handler = FindUsageUtils.getFindUsagesHandler(element, element.getProject());
-        Logger.getInstance("!23").error(element.getText() + " handler: " + handler);
         if (handler != null) {
             final FindUsagesOptions findUsagesOptions = handler.getFindUsagesOptions();
             final PsiElement[] primaryElements = handler.getPrimaryElements();
