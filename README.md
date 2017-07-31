@@ -1,4 +1,4 @@
-# ResouceCount
+# Android-Resource-Usage-Count
 Android Resource Usage Count Plugin
 
 Auto count resource usage and show it in the left of each line.

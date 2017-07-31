@@ -1,11 +1,11 @@
 <idea-plugin>
   <id>com.niorgai</id>
-  <name>ResourceUsageCount</name>
+  <name>Android Resource Usage Count</name>
   <version>1.0</version>
   <vendor email="jianqiu.sysu@gmail.com" url="https://github.com/niorgai">Github</vendor>
 
   <description><![CDATA[
-    Count for resource usage and show it in line. <br>
+    Count for android resource usage and show in each line. <br>
     0 - grey color <br>
     1 - blue color <br>
     other - red color <br>
