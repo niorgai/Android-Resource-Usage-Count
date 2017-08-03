@@ -16,7 +16,6 @@ import com.intellij.util.Processor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.Collection;
 import java.util.List;
@@ -31,9 +30,7 @@ public class UsageCountLineProvider implements LineMarkerProvider {
             return null;
         }
         int count = findTagUsage((XmlTag) psiElement);
-        LineMarkerInfo info = new LineMarkerInfo(psiElement, psiElement.getTextRange(), new MyIcon(count), Pass.UPDATE_ALL, null, null, GutterIconRenderer.Alignment.RIGHT);
-        info.separatorPlacement = SeparatorPlacement.BOTTOM;
-        return info;
+        return new MyLineMarkerInfo(psiElement, count);
     }
 
     @Override
@@ -41,12 +38,22 @@ public class UsageCountLineProvider implements LineMarkerProvider {
 
     }
 
-    private class MyIcon implements Icon {
+    private class MyLineMarkerInfo extends LineMarkerInfo<PsiElement> {
+
+        public MyLineMarkerInfo(PsiElement element, int count) {
+            super(element, element.getTextRange(), new MyIcon(count), Pass.UPDATE_ALL, null, null, GutterIconRenderer.Alignment.RIGHT);
+            separatorPlacement = SeparatorPlacement.BOTTOM;
+        }
+
+    }
+
+    private class MyIcon extends com.intellij.util.ui.EmptyIcon {
 
         private int count;
         private int length;
 
         MyIcon(int count) {
+            super(8, 8);
             this.count = count;
             int temp = count;
             length ++;
@@ -59,7 +66,7 @@ public class UsageCountLineProvider implements LineMarkerProvider {
         @Override
         public void paintIcon(Component c, Graphics g, int i, int j) {
             g.setColor(count <= 0 ? JBColor.GRAY : count == 1 ? JBColor.BLUE : JBColor.RED);
-            g.drawString(String.valueOf(count), i, j);
+            g.drawString(String.valueOf(count), i, (int)(j + getIconHeight() + 1.5));
         }
 
         @Override
@@ -69,7 +76,7 @@ public class UsageCountLineProvider implements LineMarkerProvider {
 
         @Override
         public int getIconHeight() {
-            return 0;
+            return 8;
         }
     }
 
