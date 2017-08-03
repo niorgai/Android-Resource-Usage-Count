@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>com.niorgai</id>
   <name>Android Resource Usage Count</name>
-  <version>1.1</version>
+  <version>1.2</version>
   <vendor email="jianqiu.sysu@gmail.com" url="https://github.com/niorgai/Android-Resource-Usage-Count">Github</vendor>
 
   <description><![CDATA[
@@ -23,9 +23,7 @@
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
        on how to target different products -->
-  <depends optional="true">com.intellij.modules.java</depends>
-  <depends optional="true">com.intellij.modules.ultimate</depends>
-  <depends optional="true">com.intellij.modules.androidstudio</depends>
+  <depends optional="true">com.intellij.modules.lang</depends>
 
   <extensions defaultExtensionNs="com.intellij">
     <codeInsight.lineMarkerProvider language="XML" implementationClass="UsageCountLineProvider"/>
