@@ -1,3 +1,5 @@
+package utils;
+
 import com.intellij.find.findUsages.*;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.extensions.Extensions;
@@ -30,9 +32,9 @@ import java.util.Iterator;
  * Utils for findUsage
  * Copy from FinsUsageAction & findUsageManager & SearchForUsagesRunnable
  */
-class FindUsageUtils {
+public class FindUsageUtils {
 
-    static FindUsagesHandler getFindUsagesHandler(PsiElement element, Project project) {
+    public static FindUsagesHandler getFindUsagesHandler(PsiElement element, Project project) {
         FindUsagesHandlerFactory[] arrs = (FindUsagesHandlerFactory[]) Extensions.getExtensions(FindUsagesHandlerFactory.EP_NAME, project);
         FindUsagesHandler handler = null;
         int length = arrs.length;

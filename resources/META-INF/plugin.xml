@@ -27,6 +27,7 @@
 
   <extensions defaultExtensionNs="com.intellij">
     <codeInsight.lineMarkerProvider language="XML" implementationClass="UsageCountLineProvider"/>
+    <applicationConfigurable instance="CountColorConfiguration"/>
 
     <!-- Add your extensions here -->
   </extensions>
@@ -34,5 +35,6 @@
   <actions>
 
   </actions>
+
 
 </idea-plugin>

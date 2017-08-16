@@ -27,12 +27,20 @@
 
   <extensions defaultExtensionNs="com.intellij">
     <codeInsight.lineMarkerProvider language="XML" implementationClass="UsageCountLineProvider"/>
+    <applicationConfigurable instance="AndroidResourceUsageCount"/>
 
     <!-- Add your extensions here -->
   </extensions>
 
   <actions>
+    <group id="ResourceCount.ColorSetter" text="Android Resource Usage Count" popup="true">
+      <add-to-group group-id="ToolsMenu" relative-to-action="Android" anchor="after"/>
+        <action class="actions.SetZeroColor" id="SetZeroColor" text="Set Color for zero count"/>
+        <action class="actions.SetOneColor" id="SetOneColor" text="Set Color for one count"/>
+        <action class="actions.SetOtherColor" id="SetOtherColor" text="Set Color for other count"/>
 
+    </group>
   </actions>
+
 
 </idea-plugin>

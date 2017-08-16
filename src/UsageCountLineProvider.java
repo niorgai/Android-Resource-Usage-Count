@@ -15,6 +15,7 @@ import com.intellij.usages.UsageSearcher;
 import com.intellij.util.Processor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import utils.FindUsageUtils;
 
 import java.awt.*;
 import java.util.Collection;
