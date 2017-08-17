@@ -2,7 +2,6 @@ package utils;
 
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.ui.JBColor;
-import org.apache.http.util.TextUtils;
 
 import java.awt.*;
 
@@ -29,18 +28,6 @@ public class PropertiesUtils {
     public static Color getOtherColor() {
         String color = PropertiesComponent.getInstance().getValue(COLOR_OTHER, String.valueOf(JBColor.RED.getRGB()));
         return Color.decode(color);
-    }
-
-    public static boolean isValidColor(String color) {
-        if (TextUtils.isEmpty(color)) {
-            return false;
-        }
-        try {
-            JBColor.decode(color);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
     }
 
     public static void saveColor(Color color, String type) {

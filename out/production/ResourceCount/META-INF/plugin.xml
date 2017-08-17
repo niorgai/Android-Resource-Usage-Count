@@ -1,19 +1,24 @@
 <idea-plugin>
   <id>com.niorgai</id>
   <name>Android Resource Usage Count</name>
-  <version>1.2</version>
+  <version>2.0</version>
   <vendor email="jianqiu.sysu@gmail.com" url="https://github.com/niorgai/Android-Resource-Usage-Count">Github</vendor>
 
   <description><![CDATA[
-    Count for android resource usage and show in each line. <br>
+    Count for android resource usage and show in each line. <br> <br>
     0 - grey color <br>
     1 - blue color <br>
-    other - red color <br>
+    other - red color <br> <br>
+
+    If count not show <br>
+    Try to edit / reopen it <br> <br>
 
     <img src="http://7sbqys.com1.z0.glb.clouddn.com/resouce_count_plugin_example.jpeg" width="400" height="200"/>
     ]]></description>
 
   <change-notes><![CDATA[
+      #2.0<br>
+      You can custom color in Preferences - Other Settings - Android Resource Usage Count
 
     ]]>
   </change-notes>

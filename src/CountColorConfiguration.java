@@ -1,6 +1,5 @@
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.ui.JBColor;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
 import utils.PropertiesUtils;
@@ -106,12 +105,7 @@ public class CountColorConfiguration implements Configurable {
 
     @Override
     public void reset() {
-        PropertiesUtils.saveColor(JBColor.GRAY, PropertiesUtils.COLOR_ZERO);
-        PropertiesUtils.saveColor(JBColor.BLUE, PropertiesUtils.COLOR_ONE);
-        PropertiesUtils.saveColor(JBColor.RED, PropertiesUtils.COLOR_OTHER);
-        mZeroCount.setForeground(PropertiesUtils.getZeroColor());
-        mOneCount.setForeground(PropertiesUtils.getOneColor());
-        mOtherCount.setForeground(PropertiesUtils.getOtherColor());
+
     }
 
     @Override
