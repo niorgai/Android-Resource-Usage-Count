@@ -4,35 +4,31 @@ import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.ui.JBColor;
 import org.apache.http.util.TextUtils;
 
+import java.awt.*;
+
 /**
  * save the color
  * Created by qiu on 8/16/17.
  */
 public class PropertiesUtils {
 
-    private static final String COLOR_ZERO = "zero";
-    private static final String COLOR_ONE = "one";
-    private static final String COLOR_OTHER = "other";
+    public static final String COLOR_ZERO = "zero";
+    public static final String COLOR_ONE = "one";
+    public static final String COLOR_OTHER = "other";
 
-    public static String getZeroColor() {
-        if (PropertiesComponent.getInstance().isValueSet(COLOR_ZERO)) {
-            return PropertiesComponent.getInstance().getValue(COLOR_ZERO);
-        }
-        return JBColor.GRAY.toString();
+    public static Color getZeroColor() {
+        String color = PropertiesComponent.getInstance().getValue(COLOR_ZERO, String.valueOf(JBColor.GRAY.getRGB()));
+        return Color.decode(color);
     }
 
-    public static String getOneColor() {
-        if (PropertiesComponent.getInstance().isValueSet(COLOR_ONE)) {
-            return PropertiesComponent.getInstance().getValue(COLOR_ONE);
-        }
-        return JBColor.BLUE.toString();
+    public static Color getOneColor() {
+        String color = PropertiesComponent.getInstance().getValue(COLOR_ONE, String.valueOf(JBColor.BLUE.getRGB()));
+        return Color.decode(color);
     }
 
-    public static String getOtherColor() {
-        if (PropertiesComponent.getInstance().isValueSet(COLOR_OTHER)) {
-            return PropertiesComponent.getInstance().getValue(COLOR_OTHER);
-        }
-        return JBColor.RED.toString();
+    public static Color getOtherColor() {
+        String color = PropertiesComponent.getInstance().getValue(COLOR_OTHER, String.valueOf(JBColor.RED.getRGB()));
+        return Color.decode(color);
     }
 
     public static boolean isValidColor(String color) {
@@ -47,8 +43,8 @@ public class PropertiesUtils {
         }
     }
 
-    public static void saveColor(String color, String type) {
-        PropertiesComponent.getInstance().setValue(type, color);
+    public static void saveColor(Color color, String type) {
+        PropertiesComponent.getInstance().setValue(type, String.valueOf(color.getRGB()));
     }
 
 }

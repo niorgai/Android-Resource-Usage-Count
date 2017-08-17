@@ -9,12 +9,13 @@ import com.intellij.openapi.util.Factory;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.xml.XmlTag;
-import com.intellij.ui.JBColor;
 import com.intellij.usages.Usage;
 import com.intellij.usages.UsageSearcher;
 import com.intellij.util.Processor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import utils.FindUsageUtils;
+import utils.PropertiesUtils;
 
 import java.awt.*;
 import java.util.Collection;
@@ -65,7 +66,7 @@ public class UsageCountLineProvider implements LineMarkerProvider {
 
         @Override
         public void paintIcon(Component c, Graphics g, int i, int j) {
-            g.setColor(count <= 0 ? JBColor.GRAY : count == 1 ? JBColor.BLUE : JBColor.RED);
+            g.setColor(count <= 0 ? PropertiesUtils.getZeroColor() : count == 1 ? PropertiesUtils.getOneColor() : PropertiesUtils.getOtherColor());
             g.drawString(String.valueOf(count), i, (int)(j + getIconHeight() + 1.5));
         }
 
