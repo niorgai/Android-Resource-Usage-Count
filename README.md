@@ -7,7 +7,7 @@ Auto count resource usage and show it in the left of each line.
 
 Use in Android Studio and IntelliJ IDEA.
 
-Current version is not stable, if count not show, please close file and re-open it.
+If count not show, please edit/reopen it.
 
 [Jetbrains Plugin Page](https://plugins.jetbrains.com/plugin/9885-android-resource-usage-count)
 
@@ -38,6 +38,8 @@ Result Color
 * 0 - grey color
 * 1 - blue color
 * other - red color
+
+Custom color in `Preferences` - `Other Settings` - `Android Resource Usage Count`
 
 Path not count
 ---
