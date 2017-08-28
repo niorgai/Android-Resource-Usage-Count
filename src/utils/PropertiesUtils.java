@@ -14,6 +14,7 @@ public class PropertiesUtils {
     public static final String COLOR_ZERO = "zero";
     public static final String COLOR_ONE = "one";
     public static final String COLOR_OTHER = "other";
+    public static final String ONLY_SHOW_ZERO = "only_show_zero";
 
     public static Color getZeroColor() {
         String color = PropertiesComponent.getInstance().getValue(COLOR_ZERO, String.valueOf(JBColor.GRAY.getRGB()));
@@ -32,6 +33,14 @@ public class PropertiesUtils {
 
     public static void saveColor(Color color, String type) {
         PropertiesComponent.getInstance().setValue(type, String.valueOf(color.getRGB()));
+    }
+
+    public static void setOnlyShowZeroCount(boolean flag) {
+        PropertiesComponent.getInstance().setValue(ONLY_SHOW_ZERO, String.valueOf(flag));
+    }
+
+    public static boolean isOnlyShowZeroCount() {
+        return PropertiesComponent.getInstance().getBoolean(ONLY_SHOW_ZERO, false);
     }
 
 }

@@ -31,6 +31,9 @@ public class UsageCountLineProvider implements LineMarkerProvider {
             return null;
         }
         int count = findTagUsage((XmlTag) psiElement);
+        if (PropertiesUtils.isOnlyShowZeroCount()) {
+            return count == 0 ? new MyLineMarkerInfo(psiElement, count) : new MyLineMarkerInfo(psiElement, -1);
+        }
         return new MyLineMarkerInfo(psiElement, count);
     }
 
@@ -66,6 +69,9 @@ public class UsageCountLineProvider implements LineMarkerProvider {
 
         @Override
         public void paintIcon(Component c, Graphics g, int i, int j) {
+            if (count == -1) {
+                return;
+            }
             g.setColor(count <= 0 ? PropertiesUtils.getZeroColor() : count == 1 ? PropertiesUtils.getOneColor() : PropertiesUtils.getOtherColor());
             g.drawString(String.valueOf(count), i, (int)(j + getIconHeight() + 1.5));
         }

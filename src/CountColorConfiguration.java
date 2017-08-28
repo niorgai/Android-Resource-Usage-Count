@@ -22,6 +22,7 @@ public class CountColorConfiguration implements Configurable {
     private JLabel mZeroCount;
     private JLabel mOneCount;
     private JLabel mOtherCount;
+    private JCheckBox mOnlyShowZero;
 
     private JColorChooser mColorChooser;
 
@@ -88,6 +89,13 @@ public class CountColorConfiguration implements Configurable {
                     }
                 }, null);
                 dialog.setVisible(true);
+            }
+        });
+        mOnlyShowZero.setSelected(PropertiesUtils.isOnlyShowZeroCount());
+        mOnlyShowZero.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PropertiesUtils.setOnlyShowZeroCount(mOnlyShowZero.isSelected());
             }
         });
         return mPanel;
