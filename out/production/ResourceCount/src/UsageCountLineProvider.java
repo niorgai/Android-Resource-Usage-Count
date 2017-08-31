@@ -70,7 +70,6 @@ public class UsageCountLineProvider implements LineMarkerProvider {
         @Override
         public void paintIcon(Component c, Graphics g, int i, int j) {
             if (count == -1) {
-                g.clearRect(i, j, i + getIconWidth(), (int) (j + getIconHeight() + 1.5));
                 return;
             }
             g.setColor(count <= 0 ? PropertiesUtils.getZeroColor() : count == 1 ? PropertiesUtils.getOneColor() : PropertiesUtils.getOtherColor());

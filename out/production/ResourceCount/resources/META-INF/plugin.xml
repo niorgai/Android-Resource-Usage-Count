@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>com.niorgai</id>
   <name>Android Resource Usage Count</name>
-  <version>2.0</version>
+  <version>2.1</version>
   <vendor email="jianqiu.sysu@gmail.com" url="https://github.com/niorgai/Android-Resource-Usage-Count">Github</vendor>
 
   <description><![CDATA[
@@ -17,8 +17,11 @@
     ]]></description>
 
   <change-notes><![CDATA[
+      #2.1<br>
+      Add setting to only show zero count<br> <br>
+
       #2.0<br>
-      You can custom color in Preferences - Other Settings - Android Resource Usage Count
+      You can custom color in Preferences - Other Settings - Android Resource Usage Count <br>
 
     ]]>
   </change-notes>
