@@ -1,6 +1,9 @@
-package utils;
+package compat;
 
-import com.intellij.find.findUsages.*;
+import com.intellij.find.findUsages.CustomUsageSearcher;
+import com.intellij.find.findUsages.FindUsagesHandler;
+import com.intellij.find.findUsages.FindUsagesHandlerFactory;
+import com.intellij.find.findUsages.FindUsagesOptions;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.extensions.Extensions;
 import com.intellij.openapi.progress.ProcessCanceledException;
@@ -11,12 +14,14 @@ import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.IndexNotReadyException;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Computable;
+import com.intellij.openapi.util.Factory;
 import com.intellij.openapi.wm.ex.ProgressIndicatorEx;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.search.*;
+import com.intellij.psi.xml.XmlTag;
 import com.intellij.usageView.UsageInfo;
 import com.intellij.usages.Usage;
 import com.intellij.usages.UsageInfoToUsageConverter;
@@ -25,16 +30,58 @@ import com.intellij.util.CommonProcessors;
 import com.intellij.util.Processor;
 import com.intellij.util.containers.ContainerUtil;
 import org.jetbrains.annotations.NotNull;
+import utils.ResourceUsageCountUtils;
 
 import java.util.Iterator;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Utils for findUsage
  * Copy from FinsUsageAction & findUsageManager & SearchForUsagesRunnable
  */
-public class FindUsageUtils {
+class FindUsagesImpl171 {
 
-    public static FindUsagesHandler getFindUsagesHandler(PsiElement element, Project project) {
+    private static volatile FindUsagesImpl171 mInstance;
+
+    static FindUsagesImpl171 getInstance() {
+        if (mInstance == null) {
+            synchronized (FindUsagesImpl171.class) {
+                if (mInstance == null) {
+                    mInstance = new FindUsagesImpl171();
+                }
+            }
+        }
+        return mInstance;
+    }
+
+    int findUsage(XmlTag element) {
+        final FindUsagesHandler handler = FindUsagesImpl171.getFindUsagesHandler(element, element.getProject());
+        if (handler != null) {
+            final FindUsagesOptions findUsagesOptions = handler.getFindUsagesOptions();
+            final PsiElement[] primaryElements = handler.getPrimaryElements();
+            final PsiElement[] secondaryElements = handler.getSecondaryElements();
+            Factory factory = new Factory() {
+                public UsageSearcher create() {
+                    return FindUsagesImpl171.createUsageSearcher(primaryElements, secondaryElements, handler, findUsagesOptions, (PsiFile) null);
+                }
+            };
+            UsageSearcher usageSearcher = (UsageSearcher)factory.create();
+            final AtomicInteger mCount = new AtomicInteger(0);
+            usageSearcher.generate(new Processor<Usage>() {
+                @Override
+                public boolean process(Usage usage) {
+                    if (ResourceUsageCountUtils.isUsefulUsageToCount(usage)) {
+                        mCount.incrementAndGet();
+                    }
+                    return true;
+                }
+            });
+            return mCount.get();
+        }
+        return 0;
+    }
+
+    private static FindUsagesHandler getFindUsagesHandler(PsiElement element, Project project) {
         FindUsagesHandlerFactory[] arrs = (FindUsagesHandlerFactory[]) Extensions.getExtensions(FindUsagesHandlerFactory.EP_NAME, project);
         FindUsagesHandler handler = null;
         int length = arrs.length;
@@ -76,7 +123,7 @@ public class FindUsageUtils {
 
 
     @NotNull
-    public static UsageSearcher createUsageSearcher(@NotNull final PsiElement[] primaryElements, @NotNull final PsiElement[] secondaryElements, @NotNull final FindUsagesHandler handler, @NotNull FindUsagesOptions options, final PsiFile scopeFile) {
+    private static UsageSearcher createUsageSearcher(@NotNull final PsiElement[] primaryElements, @NotNull final PsiElement[] secondaryElements, @NotNull final FindUsagesHandler handler, @NotNull FindUsagesOptions options, final PsiFile scopeFile) {
         final FindUsagesOptions optionsClone = options.clone();
         return new UsageSearcher() {
             public void generate(@NotNull final Processor<Usage> processor) {

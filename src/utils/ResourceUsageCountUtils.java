@@ -1,3 +1,5 @@
+package utils;
+
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.xml.XmlTag;
@@ -8,12 +10,12 @@ import org.apache.http.util.TextUtils;
 /**
  * Utils for resource count
  */
-class ResourceUsageCountUtils {
+public class ResourceUsageCountUtils {
 
     /**
      * valid tag to count
      */
-    static boolean isTargetTagToCount(PsiElement tag) {
+    public static boolean isTargetTagToCount(PsiElement tag) {
         if (tag == null || !(tag instanceof XmlTag) || TextUtils.isEmpty(((XmlTag)tag).getName())) {
             return false;
         }
@@ -39,7 +41,7 @@ class ResourceUsageCountUtils {
     /**
      * It's useless to count build folder
      */
-    static boolean isUsefulUsageToCount(Usage usage) {
+    public static boolean isUsefulUsageToCount(Usage usage) {
         if (usage instanceof ReadWriteAccessUsageInfo2UsageAdapter) {
             VirtualFile virtualFile = ((ReadWriteAccessUsageInfo2UsageAdapter) usage).getFile();
             if (virtualFile != null) {
