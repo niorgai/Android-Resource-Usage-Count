@@ -42,6 +42,9 @@
 
   <actions>
 
+    <action id="FindUsageAction" class="FindUsageAction" text="Find Usage" description="Start Find">
+      <add-to-group group-id="AnalyzeMenu" anchor="last"/>
+    </action>
   </actions>
 
 

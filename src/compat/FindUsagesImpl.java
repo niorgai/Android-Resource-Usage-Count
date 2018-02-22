@@ -1,9 +1,6 @@
 package compat;
 
-import com.intellij.find.findUsages.CustomUsageSearcher;
-import com.intellij.find.findUsages.FindUsagesHandlerFactory;
-import com.intellij.find.findUsages.FindUsagesOptions;
-import com.intellij.find.findUsages.PsiElement2UsageTargetAdapter;
+import com.intellij.find.findUsages.*;
 import com.intellij.navigation.NavigationItem;
 import com.intellij.openapi.application.ReadAction;
 import com.intellij.openapi.extensions.Extensions;
@@ -54,10 +51,13 @@ class FindUsagesImpl {
     }
 
     int findUsage(XmlTag element) {
+        final AtomicInteger mCount = new AtomicInteger(0);
         try {
             com.intellij.find.findUsages.FindUsagesHandler handler = this.getFindUsagesHandler(element);
             if (handler != null) {
-                FindUsagesOptions findUsagesOptions = handler.getFindUsagesOptions();
+                AbstractFindUsagesDialog dialog = handler.getFindUsagesDialog(false, false, false);
+                dialog.close(0);
+                FindUsagesOptions findUsagesOptions = dialog.calcFindUsagesOptions();
                 PsiElement[] primaryElements = handler.getPrimaryElements();
                 PsiElement[] secondaryElements = handler.getSecondaryElements();
                 PsiElement2UsageTargetAdapter[] primaryTargets = convertToUsageTargets(Arrays.asList(primaryElements), findUsagesOptions);
@@ -70,7 +70,6 @@ class FindUsagesImpl {
                 };
 
                 UsageSearcher usageSearcher = (UsageSearcher)factory.create();
-                final AtomicInteger mCount = new AtomicInteger(0);
                 usageSearcher.generate((usage) -> {
                     if (ResourceUsageCountUtils.isUsefulUsageToCount(usage)) {
                         mCount.incrementAndGet();
@@ -81,22 +80,24 @@ class FindUsagesImpl {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return 0;
+        return mCount.get();
     }
 
-    private com.intellij.find.findUsages.FindUsagesHandler getFindUsagesHandler(@NotNull PsiElement element) {
+    private FindUsagesHandler getFindUsagesHandler(@NotNull PsiElement element) {
         FindUsagesHandlerFactory[] var3 = (FindUsagesHandlerFactory[]) Extensions.getExtensions(FindUsagesHandlerFactory.EP_NAME, element.getProject());
         int var4 = var3.length;
 
         for(int var5 = 0; var5 < var4; ++var5) {
             FindUsagesHandlerFactory factory = var3[var5];
-            com.intellij.find.findUsages.FindUsagesHandler handler = factory.createFindUsagesHandler(element, false);
-            if(handler == com.intellij.find.findUsages.FindUsagesHandler.NULL_HANDLER) {
-                return null;
-            }
+            if(factory.canFindUsages(element)) {
+                com.intellij.find.findUsages.FindUsagesHandler handler = factory.createFindUsagesHandler(element, false);
+                if (handler == com.intellij.find.findUsages.FindUsagesHandler.NULL_HANDLER) {
+                    return null;
+                }
 
-            if(handler != null) {
-                return handler;
+                if (handler != null) {
+                    return handler;
+                }
             }
         }
 
