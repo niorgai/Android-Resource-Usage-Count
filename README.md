@@ -1,6 +1,12 @@
 # Android-Resource-Usage-Count
 Android Resource Usage Count Plugin 
 
+**DEPRECATED**
+
+Due to IDE's find usage action cause too much memory, use this plugin will block your pc maybe after AS 3.0.
+
+If I find some solution, i will reopen this repo.
+
 [中文版](http://niorgai.github.io/2017/08/01/Android-Resource-Usage-Count/)
 
 Auto count resource usage and show it in the left of each line.
